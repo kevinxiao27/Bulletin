@@ -26,9 +26,11 @@
   },
   "homepage": "https://github.com/kevinxiao27/Bulletin#readme",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "mongoose": "^8.0.4",
-    "nodemon": "^3.0.2"
+    "nodemon": "^3.0.2",
+    "validatory": "^0.3.1"
   }
 }
