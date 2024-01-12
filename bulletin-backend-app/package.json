@@ -1,9 +1,11 @@
 {
   "name": "bulletin-backend-app",
   "version": "1.0.0",
+  "type": "module",
   "description": "Restful CRUD API with Node.js, Express and MongoDB",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon --experimental-modules --es-module-specifier-resolution=node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,5 +24,11 @@
   "bugs": {
     "url": "https://github.com/kevinxiao27/Bulletin/issues"
   },
-  "homepage": "https://github.com/kevinxiao27/Bulletin#readme"
+  "homepage": "https://github.com/kevinxiao27/Bulletin#readme",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^8.0.4",
+    "nodemon": "^3.0.2"
+  }
 }
