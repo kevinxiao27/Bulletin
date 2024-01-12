@@ -1,0 +1,26 @@
+{
+  "name": "bulletin-backend-app",
+  "version": "1.0.0",
+  "description": "Restful CRUD API with Node.js, Express and MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevinxiao27/Bulletin.git"
+  },
+  "keywords": [
+    "express",
+    "mongodb",
+    "rest",
+    "api",
+    "nodejs"
+  ],
+  "author": "kevinxiao27",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kevinxiao27/Bulletin/issues"
+  },
+  "homepage": "https://github.com/kevinxiao27/Bulletin#readme"
+}
