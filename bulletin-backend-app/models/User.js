@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
+import validator from "validator"
 
-const { isEmail } = require("validator")
 const Schema = mongoose.Schema
 const userSchema = new Schema({
   username: {
@@ -15,7 +15,7 @@ const userSchema = new Schema({
     unique: true,
     trim: true,
     validate: {
-      validator: isEmail,
+      validator: validator.isEmail,
       message: (props) => `${props.value} is not a valid email`,
     },
   },

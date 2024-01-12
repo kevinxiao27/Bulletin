@@ -1,4 +1,5 @@
 import User from "../models/User.js"
+import bcrypt from "bcrypt"
 
 export const getAllUsers = async (req, res, next) => {
   let users
@@ -16,26 +17,19 @@ export const getAllUsers = async (req, res, next) => {
 
 export const createUser = async (req, res, next) => {
   const { username, email, password } = req.body
-  const saltRounds = 10
-  const saveUser = (err, hash) => {
-    if (err != null) {
-      console.error(`An error occured: ${err}`)
-    }
+  const hashedPassword = bcrypt.hashSync(password, 10)
 
-    let user = new User({
-      username,
-      email,
-      password: hash,
-    })
-
-    try {
-      user.save().then(() => {
-        res.status(200).json({ message: "User created successfully", user })
-      })
-    } catch (error) {
-      return res.status(401).send(err.message)
-    }
+  if (
+    !username &&
+    username.trim() === "" &&
+    !email &&
+    email.trim() === "" &&
+    !password &&
+    password.trim() === ""
+  ) {
+    return res.status(422).json({ message: "Please enter valid inputs." })
   }
+
   let emailExists = await User.findOne({ email })
   let userExists = await User.findOne({ username })
 
@@ -45,9 +39,16 @@ export const createUser = async (req, res, next) => {
     res.status(401).json({ message: "Username is already in use." })
   }
 
+  let user
   try {
-    bcrypt.hash(password, saltRounds, saveUser)
-  } catch (error) {
-    return res.status(401).send(err.message)
+    user = new User({ username, email, password: hashedPassword })
+    user = await user.save()
+  } catch (err) {
+    return console.log(err)
   }
+
+  if (!user) {
+    return res.status(500).json({ message: "Unexpected Error Occurred" })
+  }
+  return res.status(201).json({ user })
 }
