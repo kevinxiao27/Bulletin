@@ -10,8 +10,6 @@ app.use(express.json())
 app.use("/user", userRouter)
 
 mongoose
-  .connect(
-    `mongodb+srv://kevinxiao27:${process.env.MONGODB_PASSWORD}@cluster0.3y7wqny.mongodb.net/`
-  )
+  .connect(`${process.env.MONGODB_URL}`)
   .then(() => app.listen(8080, () => console.log(`Connected to MongoDB`)))
   .catch((e) => console.log(e))
