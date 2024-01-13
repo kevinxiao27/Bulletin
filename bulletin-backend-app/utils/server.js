@@ -3,6 +3,8 @@ import mongoose from "mongoose"
 import dotenv from "dotenv"
 import userRouter from "../views/user-router.js"
 
+dotenv.config()
+
 function createServer() {
   const app = express()
 

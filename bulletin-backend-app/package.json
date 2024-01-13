@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --experimental-modules --es-module-specifier-resolution=node app.js",
-    "test": "NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' jest"
+    "test": "NODE_OPTIONS='--experimental-vm-modules --es-module-specifier-resolution=node' jest"
   },
   "repository": {
     "type": "git",

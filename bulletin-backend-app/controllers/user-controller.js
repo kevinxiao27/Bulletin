@@ -21,11 +21,11 @@ export const createUser = async (req, res, next) => {
   const hashedPassword = bcrypt.hashSync(password, 10)
 
   if (
-    !username &&
-    username.trim() === "" &&
-    !email &&
-    email.trim() === "" &&
-    !password &&
+    !username ||
+    username.trim() === "" ||
+    !email ||
+    email.trim() === "" ||
+    !password ||
     password.trim() === ""
   ) {
     return res.status(422).json({ message: "Please enter valid inputs." })
