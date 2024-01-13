@@ -1,15 +1,11 @@
-import express from "express"
-import mongoose from "mongoose"
+// import express from "express"
+// import mongoose, { connect } from "mongoose"
 import dotenv from "dotenv"
-import userRouter from "./views/user-router.js"
+import createServer from "./utils/server.js"
 
 dotenv.config()
-const app = express()
+const app = createServer()
 
-app.use(express.json())
-app.use("/user", userRouter)
-
-mongoose
-  .connect(`${process.env.MONGODB_URL}`)
-  .then(() => app.listen(8080, () => console.log(`Connected to MongoDB`)))
-  .catch((e) => console.log(e))
+app.listen(8080, async () => {
+  console.log("Connected to MongoDB and running at http://localhost:8080")
+})

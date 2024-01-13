@@ -34,6 +34,7 @@
     "mongodb-memory-server": "^9.1.4",
     "mongoose": "^8.0.4",
     "nodemon": "^3.0.2",
+    "supertest": "^6.3.3",
     "validator": "^13.11.0",
     "validatory": "^0.3.1"
   },
