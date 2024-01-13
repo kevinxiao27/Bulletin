@@ -18,7 +18,6 @@ export const getAllUsers = async (req, res, next) => {
 
 export const createUser = async (req, res, next) => {
   const { username, email, password } = req.body
-  const hashedPassword = bcrypt.hashSync(password, 10)
 
   if (
     !username ||
@@ -30,6 +29,7 @@ export const createUser = async (req, res, next) => {
   ) {
     return res.status(422).json({ message: "Please enter valid inputs." })
   }
+  const hashedPassword = bcrypt.hashSync(password, 10)
 
   let emailExists = await User.findOne({ email })
   let userExists = await User.findOne({ username })
