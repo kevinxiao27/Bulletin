@@ -13,7 +13,7 @@ function createServer() {
   app.use("/user", userRouter)
   app.use("/org", orgRouter)
 
-  mongoose.connect(`${process.env.MONGODB_URL}`).catch((e) => console.log(e))
+  mongoose.connect(`${process.env.MONGODB_URI}`).catch((e) => console.log(e))
 
   return app
 }
