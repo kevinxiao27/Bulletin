@@ -60,9 +60,9 @@ export const login = async (req, res, next) => {
   let foundOrg
   try {
     if (!username) {
-      foundOrg = await Organization.findOne({ email })
+      foundOrg = await Organization.findOne({ email: email })
     } else {
-      foundOrg = await Organization.findOne({ username })
+      foundOrg = await Organization.findOne({ username: username })
     }
   } catch (error) {
     return console.log(error)

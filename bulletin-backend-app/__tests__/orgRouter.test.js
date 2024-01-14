@@ -68,6 +68,19 @@ describe("users", () => {
         }
         await supertest(app).post(`/org/sign-up`).send(payload2).expect(400)
       })
+      it("Login test organization", async () => {
+        const payload2 = {
+          //   username: "sdf",
+          email: "test@gmail.com",
+          password: "niceabcdef",
+        }
+        const response = await supertest(app)
+          .post(`/org/login`)
+          .send(payload2)
+          .expect(200)
+        const token = response.body.token
+        console.log(token)
+      })
     })
   })
 })

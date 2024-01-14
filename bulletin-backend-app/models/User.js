@@ -30,6 +30,7 @@ const userSchema = new Schema({
       message: () => "Password must be at least six characters long",
     },
   },
+  registeredBulletins: [{ type: mongoose.Types.ObjectId, ref: "Bulletin" }],
 })
 
 export default mongoose.model("User", userSchema)
