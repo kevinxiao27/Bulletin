@@ -173,7 +173,7 @@ export const getBulletinById = async (req, res, next) => {
 }
 
 export const deleteBulletin = async (req, res, next) => {
-  const extractedToken = req.headers.authorization.split(" "[1])
+  const extractedToken = req.headers.authorization.split(" ")[1]
   const id = req.params.id
   let bulletin
 
@@ -201,7 +201,7 @@ export const deleteBulletin = async (req, res, next) => {
     }
   })
 
-  if (bulletin.organization !== orgId) {
+  if (bulletin.organization != orgId) {
     return res
       .status(401)
       .json({ message: "Unauthorized to complete this action" })
