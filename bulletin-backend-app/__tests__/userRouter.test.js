@@ -7,6 +7,7 @@ const app = createServer()
 // app.use(bodyParser.json())
 // app.use(bodyParser.urlencoded({ extended: true }))
 let mongoServer
+let Token
 
 describe("users", () => {
   beforeAll(async () => {
@@ -67,6 +68,19 @@ describe("users", () => {
           password: "niceabcdef",
         }
         await supertest(app).post(`/user/sign-up`).send(payload2).expect(400)
+      })
+      it("Login User", async () => {
+        const payload = {
+          // username: "sdf",
+          email: "test@gmail.com",
+          password: "niceabcdef",
+        }
+        const response = await supertest(app)
+          .post(`/user/login`)
+          .send(payload)
+          .expect(200)
+        const token = response.body.token
+        // console.log(token)
       })
     })
   })

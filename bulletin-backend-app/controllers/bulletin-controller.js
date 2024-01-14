@@ -2,6 +2,7 @@ import mongoose from "mongoose"
 import Bulletin from "../models/Bulletin.js"
 import jwt from "jsonwebtoken"
 import Organization from "../models/Organization.js"
+import User from "../models/User.js"
 
 export const addBulletin = async (req, res, next) => {
   const extractedToken = req.headers.authorization.split(" ")[1]
@@ -100,9 +101,7 @@ export const updateBulletin = async (req, res, next) => {
       .json({ message: "Unauthorized to complete this action" })
   }
 
-  const { title, description, date, posterUrl, featured } = req.body
-
-  const registered = bulletin.registered
+  const { title, description, date, posterUrl, featured, registered } = req.body
 
   if (
     !title ||
@@ -221,7 +220,60 @@ export const deleteBulletin = async (req, res, next) => {
   res.status(200).json({ message: "Bulletin Deleted Successfully" })
 }
 
-// export const registerUser = async (req, res, next) => {
-//   const bulletinId = req.params.id
-//   let bulletin
-// }
+export const registerUser = async (req, res, next) => {
+  const extractedToken = req.headers.authorization.split(" ")[1]
+  const id = req.params.id
+  let bulletin
+
+  try {
+    bulletin = await Bulletin.findById(id)
+  } catch (error) {
+    console.log(error)
+  }
+
+  if (!bulletin) {
+    return res.status(404).json({ message: "Failed to find Bulletin" })
+  }
+  if (!extractedToken || extractedToken.trim() === "") {
+    return res.status(404).json({ message: "Token not found" })
+  }
+
+  let userId
+  // verify -- then decrypt the token ==> then store the admin id from the token
+  jwt.verify(extractedToken, process.env.SECRET_KEY, (err, decrypted) => {
+    if (err) {
+      return res.status(400).json({ message: `${err.message}` })
+    } else {
+      userId = decrypted.id
+      return
+    }
+  })
+
+  var registeredList = bulletin.registered
+  if (registeredList.includes(userId)) {
+    return res.status(401).json({ message: "Already Registered" })
+  } else {
+    registeredList.push(userId)
+  }
+
+  let updateBulletin
+  try {
+    const session = await mongoose.startSession()
+    const user = await User.findById(userId)
+    session.startTransaction()
+    updateBulletin = await Bulletin.findByIdAndUpdate(id, {
+      registered: registeredList,
+    })
+    user.registeredBulletins.push(updateBulletin)
+    await user.save({ session })
+    await session.commitTransaction()
+  } catch (error) {
+    return console.log(error)
+  }
+
+  if (!updateBulletin) {
+    return res.status(500).json({ message: "Registration failed" })
+  }
+
+  return res.status(200).json({ updateBulletin })
+}

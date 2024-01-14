@@ -109,6 +109,10 @@ export const updateUser = async (req, res, next) => {
     }
   })
 
+  if (userId != id) {
+    return res.status(401).json({ message: "Unauthorized to edit" })
+  }
+
   if (
     !username &&
     username.trim() === "" &&
@@ -130,7 +134,7 @@ export const updateUser = async (req, res, next) => {
   }
 
   try {
-    user = await User.findByIdAndUpdate(id, {
+    user = await User.findByIdAndUpdate(userId, {
       username,
       email,
       password: hashedPassword,

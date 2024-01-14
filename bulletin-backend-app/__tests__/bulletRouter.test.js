@@ -8,7 +8,9 @@ const app = createServer()
 // app.use(bodyParser.urlencoded({ extended: true }))
 let mongoServer
 
-var TOKEN = ""
+var ORG_TOKEN = ""
+var USER_TOKEN = ""
+var BULLETIN_ID = ""
 
 describe("users", () => {
   beforeAll(async () => {
@@ -29,7 +31,7 @@ describe("users", () => {
         await supertest(app).get(`/bulletin`).expect(200)
       })
     })
-    describe("Creating an org", () => {
+    describe("Creation of Bulletin", () => {
       it("Create an org, return status 201", async () => {
         const payload = {
           username: "uniquesdf",
@@ -48,7 +50,7 @@ describe("users", () => {
           .post(`/org/login`)
           .send(payload2)
           .expect(200)
-        TOKEN = response.body.token
+        ORG_TOKEN = response.body.token
       })
       it("Create Bulletin belonging to test organization", async () => {
         const payload3 = {
@@ -59,11 +61,44 @@ describe("users", () => {
             "https://www.wikihow.com/images/thumb/d/db/Get-the-URL-for-Pictures-Step-2-Version-6.jpg/v4-460px-Get-the-URL-for-Pictures-Step-2-Version-6.jpg",
           featured: true,
         }
-        await supertest(app)
+        const response = await supertest(app)
           .post(`/bulletin/add`)
           .send(payload3)
-          .set("Authorization", `Bearer ${TOKEN}`)
+          .set("Authorization", `Bearer ${ORG_TOKEN}`)
           .expect(200)
+
+        BULLETIN_ID = response.body.bulletin._id
+        // console.log(BULLETIN_ID)
+      })
+    })
+    describe("Registration for a Bulletin", () => {
+      it("Create User, return status 201", async () => {
+        const payload = {
+          username: "uniquesdf",
+          email: "uniuqetest@gmail.com",
+          password: "niceabcdef",
+        }
+        await supertest(app).post(`/user/sign-up`).send(payload).expect(201)
+      })
+      it("Login User", async () => {
+        const payload = {
+          username: "uniquesdf",
+          //   email: "test@gmail.com",
+          password: "niceabcdef",
+        }
+        const response = await supertest(app)
+          .post(`/user/login`)
+          .send(payload)
+          .expect(200)
+        USER_TOKEN = response.body.token
+        // console.log(USERTOKEN)
+      })
+      it("Register user for event", async () => {
+        const response = await supertest(app)
+          .put(`/bulletin/register/${BULLETIN_ID}`)
+          .set("Authorization", `Bearer ${USER_TOKEN}`)
+          .expect(200)
+        // console.log(USERTOKEN)
       })
     })
   })

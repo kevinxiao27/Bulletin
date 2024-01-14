@@ -78,8 +78,8 @@ describe("users", () => {
           .post(`/org/login`)
           .send(payload2)
           .expect(200)
-        const token = response.body.token
-        console.log(token)
+        const TOKEN = response.body.token
+        // console.log(TOKEN)
       })
     })
   })
