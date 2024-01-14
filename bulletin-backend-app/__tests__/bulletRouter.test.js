@@ -1,7 +1,7 @@
 import supertest from "supertest"
 import createServer from "../utils/server"
 import mongoose from "mongoose"
-import { MongoMemoryServer } from "mongodb-memory-server"
+import { MongoMemoryReplSet } from "mongodb-memory-server"
 
 const app = createServer()
 // app.use(bodyParser.json())
@@ -13,14 +13,14 @@ var TOKEN = ""
 describe("users", () => {
   beforeAll(async () => {
     await mongoose.disconnect()
-    mongoServer = await MongoMemoryServer.create()
+    mongoServer = await MongoMemoryReplSet.create({ replSet: { count: 4 } })
     await mongoose.connect(mongoServer.getUri())
   })
 
   afterAll(async () => {
-    await mongoose.disconnect(/*force*/ true)
-    await mongoose.connection.close(/*force*/ true)
-    mongoServer.stop()
+    await mongoose.disconnect()
+    await mongoose.connection.close()
+    await mongoServer.stop()
   })
 
   describe("Get Bulletin Route", () => {
