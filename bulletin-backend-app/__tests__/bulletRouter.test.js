@@ -94,11 +94,41 @@ describe("users", () => {
         // console.log(USERTOKEN)
       })
       it("Register user for event", async () => {
-        const response = await supertest(app)
+        await supertest(app)
           .put(`/bulletin/register/${BULLETIN_ID}`)
           .set("Authorization", `Bearer ${USER_TOKEN}`)
           .expect(200)
         // console.log(USERTOKEN)
+      })
+      it("Register user for event", async () => {
+        await supertest(app)
+          .put(`/bulletin/register/${BULLETIN_ID}`)
+          .set("Authorization", `Bearer ${USER_TOKEN}`)
+          .expect(401)
+        // console.log(USERTOKEN)
+      })
+      it("Update Bulletin Date for Event", async () => {
+        const payload3 = {
+          title: "Test Bulletin!",
+          description: "test description: this event happening at 3 pm?",
+          date: "2024-01-03",
+          posterUrl:
+            "https://www.wikihow.com/images/thumb/d/db/Get-the-URL-for-Pictures-Step-2-Version-6.jpg/v4-460px-Get-the-URL-for-Pictures-Step-2-Version-6.jpg",
+          featured: true,
+        }
+        await supertest(app)
+          .put(`/bulletin/${BULLETIN_ID}`)
+          .send(payload3)
+          .set("Authorization", `Bearer ${ORG_TOKEN}`)
+          .expect(200)
+        // console.log(USERTOKEN)
+      })
+      it("Check that date has been properly updated", async () => {
+        const response = await supertest(app)
+          .get(`/bulletin/${BULLETIN_ID}`)
+          .expect(200)
+        // console.log(USERTOKEN)
+        expect(response.body.bulletin.date).toEqual("2024-01-03")
       })
     })
   })

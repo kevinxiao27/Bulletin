@@ -2,6 +2,7 @@ import express from "express"
 import {
   addBulletin,
   deleteBulletin,
+  deregisterUser,
   getAllBulletins,
   getBulletinById,
   registerUser,
@@ -16,5 +17,6 @@ bulletRouter.post("/add", addBulletin)
 bulletRouter.put("/:id", updateBulletin)
 bulletRouter.put("/register/:id", registerUser)
 bulletRouter.delete("/:id", deleteBulletin)
+bulletRouter.delete("/deregister/:id", deregisterUser)
 
 export default bulletRouter
