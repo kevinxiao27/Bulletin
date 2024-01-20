@@ -7,7 +7,7 @@ const app = createServer()
 // app.use(bodyParser.json())
 // app.use(bodyParser.urlencoded({ extended: true }))
 let mongoServer
-let Token
+let USERTOKEN
 
 describe("users", () => {
   beforeAll(async () => {
@@ -79,7 +79,7 @@ describe("users", () => {
           .post(`/user/login`)
           .send(payload)
           .expect(200)
-        const token = response.body.token
+        TOKEN = response.body.token
         // console.log(token)
       })
     })
